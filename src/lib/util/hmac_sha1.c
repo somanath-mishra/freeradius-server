@@ -77,7 +77,6 @@ void fr_hmac_sha1(uint8_t digest[SHA1_DIGEST_LENGTH], uint8_t const *in, size_t 
 	HMAC_CTX_reset(ctx);
 }
 #else
-
 /** Calculate HMAC using internal SHA1 implementation
  *
  * @param digest Caller digest to be filled in.
@@ -89,7 +88,7 @@ void fr_hmac_sha1(uint8_t digest[SHA1_DIGEST_LENGTH], uint8_t const *in, size_t 
 void fr_hmac_sha1(uint8_t digest[static SHA1_DIGEST_LENGTH], uint8_t const *in, size_t inlen,
 		  uint8_t const *key, size_t key_len)
 {
-	fr_sha1_ctx context;
+	fr_sha1_ctx ctx;
 	uint8_t k_ipad[65];    /* inner padding - key XORd with ipad */
 	uint8_t k_opad[65];    /* outer padding - key XORd with opad */
 	uint8_t tk[20];
