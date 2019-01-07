@@ -107,20 +107,25 @@ static void calc_md4_digest(uint8_t *buffer, uint8_t const *challenge, size_t ch
 {
 	uint8_t buf[1024];
 	int i;
-	FR_MD4_CTX context;
+	fr_md4_ctx_t *ctx;
 
 	memset(buf, 0, 1024);
 	memset(buf, 0x36, 64);
-	for(i=0; i<64 && password[i]; i++) buf[i]^=password[i];
-	memcpy(buf+64, challenge, challen);
-	fr_md4_init(&context);
-	fr_md4_update(&context,buf,64+challen);
+	for (i = 0; i < 64 && password[i]; i++) buf[i]^=password[i];
+	memcpy(buf + 64, challenge, challen);
+
+	ctx = fr_md4_ctx_alloc(true);
+
+	fr_md4_update(ctx, buf, 64 + challen);
 	memset(buf, 0x5c, 64);
-	for(i=0; i<64 && password[i]; i++) buf[i]^=password[i];
-	fr_md4_final(buf+64,&context);
-	fr_md4_init(&context);
-	fr_md4_update(&context,buf,64+16);
-	fr_md4_final(buffer,&context);
+	for (i=0; i<64 && password[i]; i++) buf[i]^=password[i];
+	fr_md4_final(buf+64, ctx);
+
+	fr_md4_ctx_reset(ctx);
+
+	fr_md4_update(ctx, buf, 64 + 16);
+	fr_md4_final(buffer, ctx);
+	fr_md4_ctx_free(&ctx);
 }
 
 static void calc_sha1_digest(uint8_t *buffer, uint8_t const *challenge,
