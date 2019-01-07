@@ -315,14 +315,14 @@ if test "x$enable_openssl_version_check" != "xno"; then
             [Define to 1 to have OpenSSL version check enabled])
   openssl_version_check_config="\
 	#
-	#  allow_vulnerable_openssl: Allow the server to start with
+	#  openssl_allow_vulnerable: Allow the server to start with
 	#  versions of OpenSSL known to have critical vulnerabilities.
 	#
 	#  This check is based on the version number reported by libssl
 	#  and may not reflect patches applied to libssl by
 	#  distribution maintainers.
 	#
-	allow_vulnerable_openssl = no"
+	openssl_allow_vulnerable = no"
 else
   openssl_version_check_config=
 fi

@@ -218,8 +218,12 @@ static const CONF_PARSER security_config[] = {
 	{ FR_CONF_OFFSET("chroot", FR_TYPE_STRING, main_config_t, chroot_dir) },
 	{ FR_CONF_OFFSET("allow_core_dumps", FR_TYPE_BOOL, main_config_t, allow_core_dumps), .dflt = "no" },
 
-#ifdef ENABLE_OPENSSL_VERSION_CHECK
-	{ FR_CONF_OFFSET("allow_vulnerable_openssl", FR_TYPE_STRING, main_config_t, allow_vulnerable_openssl), .dflt = "no" },
+#if defined(HAVE_OPENSSL_CRYPTO_H) && defined(ENABLE_OPENSSL_VERSION_CHECK)
+	{ FR_CONF_OFFSET("openssl_allow_vulnerable", FR_TYPE_STRING, main_config_t, openssl_allow_vulnerable), .dflt = "no" },
+#endif
+
+#ifdef HAVE_OPENSSL_CRYPTO_H
+	{ FR_CONF_OFFSET_IS_SET("openssl_fips_mode", FR_TYPE_BOOL, main_config_t, openssl_fips_mode), .dflt = "no" },
 #endif
 
 	CONF_PARSER_TERMINATOR

@@ -504,7 +504,20 @@ int main(int argc, char *argv[])
 	 *  Check for vulnerabilities in the version of libssl were linked against.
 	 */
 #if defined(HAVE_OPENSSL_CRYPTO_H) && defined(ENABLE_OPENSSL_VERSION_CHECK)
-	if (tls_version_check(config->allow_vulnerable_openssl) < 0) EXIT_WITH_FAILURE;
+	if (tls_version_check(config->openssl_allow_vulnerable) < 0) EXIT_WITH_FAILURE;
+#endif
+
+#ifdef HAVE_OPENSSL_CRYPTO_H
+	/*
+	 *  Toggle OpenSSL FIPS mode
+	 */
+	if (config->openssl_fips_mode_is_set) {
+		if (FIPS_mode_set(config->openssl_fips_mode ? 1 : 0) == 0) {
+			tls_log_error(NULL, "Failed %s OpenSSL FIPS mode",
+				      config->openssl_fips_mode ? "enabling" : "disabling");
+			EXIT_WITH_FAILURE;
+		}
+	}
 #endif
 
 	/*

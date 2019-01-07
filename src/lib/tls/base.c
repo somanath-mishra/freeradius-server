@@ -370,7 +370,7 @@ int tls_version_check(char const *acknowledged)
 	 *	Didn't get passed anything, that's an error.
 	 */
 	if (!acknowledged || !*acknowledged) {
-		ERROR("Refusing to start until 'allow_vulnerable_openssl' is given a value");
+		ERROR("Refusing to start until 'openssl_allow_vulnerable' is given a value");
 		return -1;
 	}
 
@@ -398,7 +398,7 @@ int tls_version_check(char const *acknowledged)
 			 */
 			if (!bad) {
 				INFO("Once you have verified libssl has been correctly patched, "
-				     "set security.allow_vulnerable_openssl = '%s'", defect->id);
+				     "set security.openssl_allow_vulnerable = '%s'", defect->id);
 				bad = true;
 			}
 		}
